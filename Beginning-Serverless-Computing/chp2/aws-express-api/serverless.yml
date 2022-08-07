@@ -1,0 +1,14 @@
+org: tochukz
+app: aws-express-api
+service: aws-express-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: '*'

@@ -1,4 +1,4 @@
-# Beginnning Serverless Computing (2018)  
+# Beginning Serverless Computing (2018)  
 __By Maddie Stigler__  
 
 ## Chapter 1: Understanding Serverless Computing
@@ -65,4 +65,84 @@ For deployment, try the [Serverless Framework](https://www.serverless.com/). It 
 #### Conclusion
 Serverless computing is an even-driven, function-as-a-service (FaaS) technology that utilises third-party technology and services to remove the problem of having to build and maintain infrastructure to create an application.   
 
-## Chapter 2: Getting Started  
+## Chapter 2: Getting Started
+#### What Each Provider Offers
+__AWS Lambda__  
+Amazon's serverless offering is AWS Lambda. Lambda functions are built independently from other resources but are required to be assigned to an IAM role. This role included permissions for CloudWatch, which is AWS's cloud monitoring and logging service.   
+You can see logs for you functions on the Lambda console or CloudWatch portal where it last for 30 days.
+
+Lambda has built-in versioning and Aliasing tools that can be utilised straight from the console as well. These tools let you create different versions of your function and alias those versions to different stages. For instance, if you're working with a development, testing and production environment, you can alias certain versions of your Lambda function to each to keep these environment separate.
+
+AWS Lambda also makes it easy to incorporate environment variables using key/value pair.  
+
+__Azure Functions__   
+One of Azure's strengths is its ability to integrate Application Insight with your functions. While AWS also has this capability, integrating X-Ray with Lambda, it is important to point out the power of Application Insights. This extensible Application Performance Management tool for developers can be used across many platforms. It uses powerful monitoring tools to help you understand potential performance weaknesses in your application.   
+
+__Google Cloud Functions__   
+Google Cloud Functions has automatic logging tith the Stackdriver logging tool. The Stackdriver Monitoring and Debugger allows you to debug your code's behavior in production.
+
+#### Exploring Triggers and Events   
+Triggers are simply events. They are services and HTTP requests that create events to wake up the functions and initiate a response.   
+
+#### Development Options, Toolkit, SDKs
+__AWS SDK__  
+AWS offers SDKs for all of the popular programming languages and platforms. To install AWS ask for JavaScript run
+```
+$ npm install aws-sdk
+```  
+AWS SDK allows  you to build full-scale applications that utilizes the services that AWS has to offer with little effort.  
+[AWS SDK See docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/index.html)
+
+__Azure SDK__  
+Similar to the AWS SDK, Azure also has an SDK that you can use when creating your Azure functions. To install Azure   SDK for JavaScript run
+```
+$ npm install azure
+```
+The [`azure`](https://www.npmjs.com/package/azure) SDK has been deprecated. See [`zure-sdk-for-node`](https://github.com/azure/azure-sdk-for-node) for alternatives.  
+
+__Google Cloud SDK__  
+Google Cloud's SDK also supports various tools and platforms. To install Google Cloud SDK for JavaScript run  
+```
+$ npm install google-cloud
+```
+
+#### Developing LOcally vs. Using Web Console   
+__Local Development__  
+For AWS Lambda functions, your handler function must be in the root of the zip folder as this is where AWS looks to execute your function when it is triggered.  
+For testing locally, the `lambda-local` NPM package allows you to create and store test events that you can execute on your function locally. If you aren't using a framework that automates this deployment for you, using a package such as `lambda-local` is preferred.  
+
+For Azure, we have Azure Function Core Tools, a local version of the Azure Functions runtime that allows you to create, run, debug and publish functions locally.  
+Visual Studio offers tools for Azure functions that provide templates, the ability to run and test functions, and a way to publish directly to Azure.    
+
+Google Cloud has a cloud function local emulator. The emulator allows you to run, debug, and deploy your functions locally.  
+
+__Deployment of Functions and Resources__    
+The Serverless Framework is a preferred method for deployment. Another options for deployment is the cloud provider's CLI tool.  
+
+#### The Tools  
+__Node.js__   
+The event-driven structure and ability to process on the fly makes Node.js an ideal runtime for serverless applications, chat applications, proxies, and real-time applications. Similarly to serverless functions, Node is not meant to be used for long-running, CPU-intensive operations.  
+
+__Serverless Framework__  
+The Serverless Framework is a powerful deployment and development tool. It is an integral piece to cloud functions development.  Install the Serverless Framework CLI
+```
+$ npm install -g serverless
+```  
+You can then access the serverless CLI using the `serverless` or `sls` command.  
+
+To create a new serverless project run
+```
+$ serverless create --template aws-nodejs --path aws-service
+$ cd aws-service
+$ npm init -y
+$ npm install aws-sdk
+```  
+The template defines which cloud provider you are using along with the runtime. Similar templates for Azure and Google cloud are `azure-nodejs` and `google-nodejs` respectively.  The path defined the same of the service you are creating.  See the [example code](https://github.com/mgstigler/Serverless)
+
+Another way to create a server less is to use the CLI wizard. Just run
+```
+$ serverless
+```
+and follow the prompt.  
+
+Learn More at [serverless.com/framework/docs](https://www.serverless.com/framework/docs/)  
