@@ -4,6 +4,10 @@
   "description": "",
   "dependencies": {
     "express": "^4.17.1",
-    "serverless-http": "^2.7.0"
+    "serverless-http": "^2.7.0",
+    "aws-sdk": "^2.1190.0"
+  },
+  "devDependencies": {
+    "serverless-offline": "^9.1.7"
   }
 }

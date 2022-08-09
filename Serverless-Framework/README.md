@@ -80,3 +80,14 @@ To remove your service, run
 $ serverless remove
 ```
 This will delete all the AWS resources created by your project and also remove the service from Serverless Dashboard.
+
+
+__Working Offline__  
+Install the serverless-offline plugin in your project  
+```
+$ serverless plugin install -n serverless-offline
+```  
+To run the local emulator
+```
+$ serverless offline
+```
