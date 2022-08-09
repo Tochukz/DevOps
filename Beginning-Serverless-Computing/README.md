@@ -106,7 +106,7 @@ Google Cloud's SDK also supports various tools and platforms. To install Google 
 $ npm install google-cloud
 ```
 
-#### Developing LOcally vs. Using Web Console   
+#### Developing Locally vs. Using Web Console   
 __Local Development__  
 For AWS Lambda functions, your handler function must be in the root of the zip folder as this is where AWS looks to execute your function when it is triggered.  
 For testing locally, the `lambda-local` NPM package allows you to create and store test events that you can execute on your function locally. If you aren't using a framework that automates this deployment for you, using a package such as `lambda-local` is preferred.  
@@ -146,3 +146,62 @@ $ serverless
 and follow the prompt.  
 
 Learn More at [serverless.com/framework/docs](https://www.serverless.com/framework/docs/)  
+
+## Chapter 3: Amazon Web Services  
+__Roles for Lambda__   
+To create an AWS Lambda role  
+* Launch the AWS Management Console and Navigate to the IAM Console.  
+* Click on _Role_ on the left Navigation menu
+* Click the _Create Role_ button
+* Select _AWS Server_ option under _Trusted entity Type_  
+* Select _Lambda_ under _Use case_  and click _Next_
+* Select the `AWSLambdaExecute` policy
+* Click the _Next_ button
+* Enter a name for the role, say "lambda_basic_execution"
+* Click the _Create Role_ button  
+
+The `AWSLambdaExecute` policy allows full access to `CloudWatch` and read/write access to `AWS S3`.     
+The Amazon Resource Name (ARN) for this policy is `arn:aws:iam::aws:policy/AWSLambdaExecute`. The ARN may be useful when applying policy using the AWS CLI.   
+The newly created role also have an ARN which uniquely identify the role. This can be seen by selecting the role from the list of roles on the console.  
+
+__Create your first Lambda function__  
+* Launch AWS management console
+* Navigate to the the Lambda Console
+* Click on the _Create Function_ button
+* Select the `Author From Scratch` for a function scaffolding
+* Enter a name for you function, "hello-world"
+* Select a Runtime, `Node.js 16.x`
+* Select System Architecture, `x86_64`  
+* Select _Use an exiting role_ under _Execution role_ and select the role create earlier on for Lambda function
+* Click the _Create Function_ button
+
+You can update the function handler under the `Code` tab.  
+You can configure the function under the `Configure` tab.  
+
+__Tesing__  
+Select the Test tab on your Lambda function page.  
+Click on the Test button to run a test on the function.  
+
+__Cloud Watch__  
+To see the logs for you function
+* Navigate to the `Cloud Watch` console  
+* On the left navigation bar, click on the Logs > Log groups
+* Click on you lambda function identified by it's path
+* This will display the Log Streams
+
+You can also see logs from your function by click on the Monitor tab on your function's page in the Lambda console. This give you a high-level overview of your function’s executions and outputs.
+
+__Using Environment Variable__  
+To add environment variable, go to the Configuration tab of you Lambda console.
+* Click on Environment variable on the left navigation bar
+* Click on the Edit button.
+* Click Add environment variable
+* End Key and Value in the text box provided
+* Click the Save button.
+
+__Exploring API Gateway__  
+API Gateway is an AWS service that lets you easily create and access an API all through the API Gateway console. It gives you a public RESTful API interface to a wide host of AWS services. This allows you to interact easily with your databases, messaging services, and Lambda functions through a secure gateway.   
+To create an API, go the the API Gateway Console,
+* Select the API type you want e.g REST API and click the Build button
+* Chose a Protocol
+*
