@@ -71,6 +71,18 @@ $ serverless
 ```
 This will configured your service on the Serverless Dashboard at https://app.serverless.com/your-username/apps/.  
 
+__Invoke function__
+To invoke your function directly, inside of your project directory, run
+```
+$ serverless invoke
+```
+
+__Service logs__   
+To view your service log, inside of your project directory, run
+```
+$ serverless logs
+```
+
 __The Serverless Dashboard__  
 [Serverless Dashboard](app.serverless.com) is a tool provided by the Serverless Framework to help make managing connections to AWS easier, manage configuration data for your services, monitoring capabilities and the ability to read logs for your Lambda functions amongst many other features.  
 
