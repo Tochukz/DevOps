@@ -203,5 +203,93 @@ __Exploring API Gateway__
 API Gateway is an AWS service that lets you easily create and access an API all through the API Gateway console. It gives you a public RESTful API interface to a wide host of AWS services. This allows you to interact easily with your databases, messaging services, and Lambda functions through a secure gateway.   
 To create an API, go the the API Gateway Console,
 * Select the API type you want e.g REST API and click the Build button
-* Chose a Protocol
-*
+* Choose a Protocol
+
+## Migrating Existing Express App to Serverless  
+__Limitations__   
+* Lambda does not allow you to configure environment variable, but the `dotenv` module is an excellent simple solution.
+* The API Gateway has a default timeout of 30 seconds. You may need to setup your services to timeout in a lesser time so that the API Gateway do not timeout before they do. For example, you can configure your MongoDB to timeout in say 10 seconds.
+```
+mongoose.connect(process.env.MONGODB_URI, { server: { socketOptions: { connectTimeoutMS: 10000 } } })
+```   
+* GZIP support is currently not available to API Gateway so you cannot use the `compression` middleware module to compress response body.  
+```
+// const compress = require('compression')
+...
+// Not supported in API Gateway
+// app.use(compress());
+```  
+* `node-sass` is a native binary/library (aka Addon in Node.js) and thus must be compiled in the same environment (operating system) in which it will be run. If you absolutely need to use a native library, you can set up an Amazon EC2 instance running Amazon Linux for packaging your Lambda function. In the case of SASS, I recommend to build your CSS locally instead and deploy all static assets to Amazon S3 or `CloudFront` for improved performance. For this reason `node-sass-middleware` middleware module should not be used.
+```
+// const sass = require('node-sass-middleware');
+...
+// You should precompile your SCSS/SASS files and deploy you static assets to S3 or CloudFront.
+// app.use(sass({ src: publicPath, dest: publicPath, sourceMap: true}));
+// app.use(express.static(publicPath, { maxAge: 31557600000 }));
+```
+* Storing local state is unreliable due to automatic scaling. Consider going stateless (using REST), or use an external state store (for MongoDB, you can use the `connect-mongo` package);
+```  
+// const session = require('express-session')
+...
+// Use JWT or an external state store instead.
+// app.use(session({ secret: process.env.SESSION_SECRET }))
+```  
+__AWS Serverless Express__    
+* `aws-serverless-express` communicates over a Unix domain socket. So no need for the `app.listen` call.
+```
+// Redundant line of code
+// app.listen(3000)
+```
+
+See the code in the `pet-app` directory.  
+[See the article](https://aws.amazon.com/blogs/compute/going-serverless-migrating-an-express-application-to-amazon-api-gateway-and-aws-lambda/)
+
+### Mongo DB
+__Install MongoDB Community Edition on MacOS__  
+Install Xcode Command-Line Tools
+```
+$ xcode-select --install
+```
+Tap the MongoDB Homebrew Tap to download the official Homebrew formula for MongoDB and the Database Tools  
+```
+$ brew tap mongodb/brew
+```  
+Update Homebrew and all existing formulae:
+```
+$ brew update
+```  
+Install MongoDB
+```
+$ brew install mongodb-community@6.0
+```  
+The installation includes the following binaries:
+* The mongod server
+* The mongos sharded cluster query router
+* The MongoDB Shell, mongosh
+
+You can either run MongoDB manually as a background process or as a macOS service using brew.   
+To run MongoDB as a macOS service
+```
+$ brew services start mongodb-community@6.0
+```  
+To stop a mongod running as a macOS service
+```
+$ brew services stop mongodb-community@6.0
+```  
+To verify that MongoDB is running  
+```
+$ brew services list
+```  
+To begin using MongoDB, connect `mongosh` to the running instance.  
+```
+$ mongosh
+```   
+__MongoDB Database Tools__  
+The MongoDB Database Tools are a collection of command-line utilities for working with a MongoDB deployment, including data backup and import/export tools like `mongoimport` and `mongodump` as well as monitoring tools like `mongotop`.
+
+Run mongotop against your running MongoDB instance
+```
+$ mongotop
+```
+
+[Learn more](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/)
