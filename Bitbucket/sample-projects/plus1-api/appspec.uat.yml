@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/apps/plus1-uat-api
+hooks:
+  BeforeInstall:
+    - location: scripts/uat/before_install.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/uat/after_install.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/uat/application_start.sh
+      timeout: 300
+      runas: root

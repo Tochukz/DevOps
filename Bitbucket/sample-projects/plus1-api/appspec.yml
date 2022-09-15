@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/apps/plus1-dev-api
+hooks:
+  BeforeInstall:
+    - location: scripts/dev/before_install.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/dev/after_install.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/dev/application_start.sh
+      timeout: 300
+      runas: root
