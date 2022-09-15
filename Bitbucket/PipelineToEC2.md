@@ -31,16 +31,17 @@ $ aws iam add-user-to-group --user-name BitbucketPipeline2 --group-name CodeDepl
 ### 2. Create the IAM Role
 1. Create the role  
 ```
-$ aws iam create-role --role-name CodeDeployRole2 --assume-role-policy-document file://trust-policy.json
+$ aws iam create-role --role-name CodeDeployRole2 --assume-role-policy-document file://config/trust-policy.json
 ```  
 If you need to update the _trust policy_  
 ```
-$ aws iam update-assume-role-policy --role-name CodeDeployRole2 --policy-document file://trust-policy2.json
+$ aws iam update-assume-role-policy --role-name CodeDeployRole2 --policy-document file://config/trust-policy2.json
 ```
 
 2. Attach access policy to the role
 ```
-$  aws iam put-role-policy --role-name CodeDeployRole2 --policy-name S3-Permission --policy-document file://access-policy.json
+$  aws iam put-role-policy --role-name CodeDeployRole2 --policy-name S3-Permission --policy-document file://config/s3-access-policy.json
+$ aws iam attach-role-policy --role-name CodeDeployRole2 --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
 ```
 
 3. Optionally, you can add a tag to the role
