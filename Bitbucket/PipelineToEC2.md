@@ -160,6 +160,16 @@ DEPLOYMENT_GROUP
 
 ### 11. Try it on a demo project
 After you make a push you can go to _Pipelines_ menu on your bitbucket account to see if it deploys.
+
+You may need to link some binary to the bin path in your EC2 instance
+```
+$ which yarn
+$ sudo ln -s /home/ec2-user/.nvm/versions/node/v16.17.0/bin/yarn /usr/bin/yarn
+$ which node
+$ sudo ln -s /home/ec2-user/.nvm/versions/node/v16.17.0/bin/node /usr/bin/node
+$ which pm2
+$ sudo ln -s /home/ec2-user/.nvm/versions/node/v16.17.0/bin/pm2 /usr/bin/pm2
+```
 __Learn More__  
 [Continuous Deployment Pipeline with Bitbucket](https://levelup.gitconnected.com/set-up-a-continuous-delivery-pipeline-from-bitbucket-to-aws-ec2-using-aws-code-deploy-a9777a3cbcad)
 [Attaching AWS IAM Roles To EC2 Instances](https://documentation.matillion.com/docs/2765606)  

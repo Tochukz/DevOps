@@ -103,3 +103,9 @@ To run the local emulator
 ```
 $ serverless offline
 ```
+
+__Configure AWS Access Key for Serverless CLI__  
+```
+$ serverless config credentials --provider aws --key XXXXXXXXXXX --secret XXXXXXXXXX
+```
+This it not needed if you have already configured AWS CLI on your machine. 
