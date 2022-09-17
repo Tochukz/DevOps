@@ -17,8 +17,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "prestart": "cross-env NODE_ENV=development node scripts/replace.js",
+    "start": "cross-env NODE_ENV=development  react-scripts start",
+    "predevelop": "cross-env NODE_ENV=development node scripts/replace.js",
+    "develop": "cross-env NODE_ENV=development  react-scripts build",
+    "preuat": "cross-env NODE_ENV=uat node scripts/replace.js",
+    "uat": "cross-env NODE_ENV=uat react-scripts build",
+    "prebuild": "cross-env NODE_ENV=production node scripts/replace.js",
+    "build": "cross-env NODE_ENV=production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
