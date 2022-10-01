@@ -1,6 +1,6 @@
 # Deploy From Bitbucket to AWS EC2 Instance
 ## To setup deployment pipeline from Bitbucket to AWS EC2 instance
-1. Create an IAM Group, User with programatic access and the permissions policies: _AmazonS3FullAccess_ and _AWSCodeDeployFullAccess_. This will be used by the Bitbucket Pipeline
+1. Create an IAM User Group, with programatic access and the permissions policies: _AmazonS3FullAccess_ and _AWSCodeDeployFullAccess_. This will be used by the Bitbucket Pipeline. Then create a user and assign the user to the group.
 2. Create an IAM Role with policies: _AmazonS3FullAccessand_ and _AWSCodeDeployRole_, and also select EC2 Service.  The EC2 instance will be using that role later to interact with __CodeDeploy__
 3. Create an S3 Bucket. This will be used to store the application zip file.
 4. Create an EC2 Instance with the IAM role attached or attach the IAM role to an existing instance
