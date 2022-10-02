@@ -10,8 +10,6 @@ export class HelloCdkStack extends cdk.Stack {
     new s3.Bucket(this, 'Bucket01', {
       versioned: true,
       bucketName: 'chucks-hello-cdk-bucket',
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
     });
 
     // example resource
