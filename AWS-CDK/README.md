@@ -1,7 +1,8 @@
 # AWS Cloud Development Kit  
 [AWS CDS User Guide](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)  
+[AWS CDK API References](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)
 
-### Chapter 1: Getting started
+## Chapter 1: Getting started
 The output of an AWS CDK program is an AWS CloudFormation template.  
 
 __AWS CDS Apps__   
@@ -32,16 +33,20 @@ For other third party constructs compatible with AWS CDK checkout [Construct Hub
 
 
 __Prerequisite__  
-* Node.js 10.13.0 or above.
-The applies to any language you choice to write you CDK app. Node 13.0.0 through 13.6.0 are not compatible.  
-* Install and configure AWS CLI  
+* __Node.js 10.13.0 or above__  
+This applies to any language you choice to write your CDK app in. Node 13.0.0 through 13.6.0 are not compatible.  
+* __AWS CLI__  
+Install and configure AWS CLI  
 If you are using a profile, you must have a profile of the same name in your `~/.aws/config` file as well as your `~/.aws/credential` file.  
-* Install the AWS CDK Toolkit globally
+* __AWS CDK Toolkit__  
+Install the AWS CDK Toolkit globally
 ```
 $ npm install -g aws-cdk
 $ cdk --version
 $ cdk --help
 ```
+* __SDK for you chosen language__  
+If you chosen language is Java for example, then you install the JDK, IDE and other development tooling.
 
 __Bootstrapping__  
 Bootstrapping creates the S3 bucket and other containers required by AWS CloudFormation during the deployment of stacks.  
@@ -61,13 +66,12 @@ __IDE Plugin__
 Install the AWS Toolkit for Visual Studio Code extension if you are using VSCode.
 The toolkit provides an integrated experience for developing AWS CDK applications, including the AWS CDK Explorer feature to list your AWS CDK projects and browse the various components of the CDK application. [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/)
 
-__References__  
-[AWS CDK API References](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html)  
+__References__   
 [Working with the AWS CDK in TypeScript](https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-typescript.html)   
 [AWS CDK Toolkit (cdk command)](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)  
 [Installing the AWS Toolkit for Visual Studio Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html)
 
-### Chapter 2: AWS CDK Application  
+## Chapter 2: AWS CDK Application  
 __AW CDK Development workflow__  
 1. Create the app from a template provided by the AWS CDK
 ```
@@ -117,6 +121,11 @@ Command         | Description
 `cdk synth`     | emits the synthesized CloudFormation template  
 `cdk deploy`    | deploy this stack to your default AWS account/region
 `cdk diff`      | compare deployed stack with current state
+`cdk doctor` | Checks your CDK project for potential problems
+`cdk metadata` | Displays metadata about the specified stack
+`cdk context` | Manages cached context values
+
+Learn more at [AWS ToolKit CLI](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)
 
 __Synthensize a CF template__  
 To synthesize CloudFormation template
@@ -144,5 +153,24 @@ After modifying your constructs, run the _cdk diff_ command to generate a CloudF
 $ cdk diff
 ```  
 
+__Destroying the stack__  
+To delete the stack
+```
+$ cdk destroy
+```  
+The will delete the stack and may delete the resources depending on the resource's deletion policy.   
+ For example you can set a S3 bucket removal policy to _DESTROY_ so that it will be deleted when the stack is delete.  
+
 __Reference__
-[Working with the AWS CDK in C#](https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-csharp.html)  
+[Working with the AWS CDK in C#](https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-csharp.html)   
+[AWS CDK Examples](https://github.com/aws-samples/aws-cdk-examples)
+
+## Chapter 3: CDK Workshop  
+[CDK Workshop](https://cdkworkshop.com/)
+
+__Create the application__  
+```
+$ mkdir cdk-workshop
+$ cd cdk-workshop
+$ cdk init sample-app --language typescript
+```
