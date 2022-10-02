@@ -182,3 +182,27 @@ $ mkdir cdk-workshop
 $ cd cdk-workshop
 $ cdk init sample-app --language typescript
 ```
+
+__CDK Deploy hotswap__  
+To make deployment  faster in some cases, during development, you may use the _hotswap_ flag.
+```
+$ cdk deploy --hotswap
+```
+This will make the deployment faster when there are _hotswappable_ changes.
+The _hotswap_ flag should only be used in development but never on production stack.  
+
+__CDK Watch__  
+CDK watch monitors your code and assets for changes and attempts to perform a deployment automatically when a change is detected.   
+Once we set it up, we can use _cdk watch_ to detect both _hotswappable_ changes and changes that require full CloudFormation deployment.
+```
+$ cdk watch
+```
+This will trigger an initial deployment and immediately begin observing the files we’ve specified in `cdk.json`.  
+The `cdk.json` file lists the files to be included/excluded from being watched.  
+To learn more about CDK watch see [Increasing development speed with CDK Watch](https://aws.amazon.com/blogs/developer/increasing-development-speed-with-cdk-watch/)
+
+
+## Chapter 4: Concept  
+
+## Chapter 5: Writing Constructs
+[Workshop  d](https://cdkworkshop.com/20-typescript/40-hit-counter.html)
