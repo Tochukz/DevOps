@@ -49,7 +49,7 @@ $ cdk --help
 If you chosen language is Java for example, then you install the JDK, IDE and other development tooling.
 
 __Bootstrapping__  
-Bootstrapping creates the S3 bucket and other containers required by AWS CloudFormation during the deployment of stacks.  
+Bootstrapping creates the S3 bucket (used to store templates and assets) and other containers required by AWS CloudFormation during the deployment of stacks.  
 ```
 $ cdk bootstrap aws://my-account-number/my-aws-region  
 ```  
@@ -146,6 +146,14 @@ To see all your deployed stacks
 ```
 $ aws cloudformation describe-stacks
 ```
+To see all the resources provisioned by the stack
+```
+$ aws cloudformation describe-stack-resources --stack-name MyStackName
+```
+To see the details of a specific resource of the stack
+```
+$ aws cloudformation describe-stack-resource --stack-name CdkWorkshopStack --logical-resource-id CdkWorkshopQueue50D9D426
+```  
 
 __Modifying a stack__  
 After modifying your constructs, run the _cdk diff_ command to generate a CloudFormation change set.    
