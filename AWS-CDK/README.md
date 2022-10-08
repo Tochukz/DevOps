@@ -123,7 +123,9 @@ Command         | Description
 `cdk diff`      | compare deployed stack with current state
 `cdk doctor` | Checks your CDK project for potential problems
 `cdk metadata` | Displays metadata about the specified stack
-`cdk context` | Manages cached context values
+`cdk context` | Manages cached context values 
+`cdk init sample-app` | Create new CDK app using the _sample-app_ template
+`cdk init --list ` | Shows the list of available template
 
 Learn more at [AWS ToolKit CLI](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)
 
@@ -203,6 +205,7 @@ To learn more about CDK watch see [Increasing development speed with CDK Watch](
 
 
 ## Chapter 4: Concept  
+AWS CDK apps are composed of building blocks known as Constructs, which are composed together to form stacks and apps.
 
 ## Chapter 5: Writing Constructs
 [Workshop  d](https://cdkworkshop.com/20-typescript/40-hit-counter.html)
