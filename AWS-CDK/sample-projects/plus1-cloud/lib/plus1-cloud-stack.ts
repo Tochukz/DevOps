@@ -8,8 +8,6 @@ import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { KeyPair } from 'cdk-ec2-key-pair';
 import { Construct } from 'constructs';
 
-const { Vpc, SecurityGroup } = ec2;
-
 export class Plus1CloudStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -26,21 +24,14 @@ export class Plus1CloudStack extends Stack {
 
     this.addUserData(ec2Instance);
  
-    // const s3Asset = new Asset(this, 'S3Asset', { path: join(__dirname, '../src/config.sh')});
-    // const filePath = ec2Instance.userData.addS3DownloadCommand({
-    //   bucket: s3Asset.bucket,
-    //   bucketKey: s3Asset.s3ObjectKey,
-    // }); 
-    // ec2Instance.userData.addExecuteFileCommand({
-    //   filePath,
-    //   arguments: '--verbose -y'
-    // });
-
     this.setupOutput(ec2Instance, key);
   }
 
+  /**
+   * Create keypair and grant privillege to existing IAM group
+   * @returns void 
+   */
   createKeyPair(): KeyPair {
-    /** Use existing IAM group */
     // const group = iam.Group.fromGroupArn(this, 'UserGroup', 'arn:aws:iam::966727776968:group/CLIUsers');
     const group = iam.Group.fromGroupName(this, 'UserGroup', 'CLIUsers');
 
