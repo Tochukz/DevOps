@@ -13,3 +13,5 @@ sudo service nginx start
 # Enable Nginx to start at Boot time
 sudo chkconfig nginx o
 
+## Install PostgreSQL client (psql)
+sudo amazon-linux-extras install postgresql10 -y

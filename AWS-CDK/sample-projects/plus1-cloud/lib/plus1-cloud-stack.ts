@@ -1,10 +1,10 @@
 import { IConfig } from './../src/interfaces/IConfig';
 import { join } from 'path';
 import { readFileSync } from 'fs';
-import { Duration, Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
+import { Duration, Stack, StackProps, CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import * as rds from 'aws-cdk-lib/aws-rds';
 import { KeyPair } from 'cdk-ec2-key-pair';
 import { Construct } from 'constructs';
 
@@ -23,8 +23,10 @@ export class Plus1CloudStack extends Stack {
     this.associateEipToEc2(ec2Instance);
 
     this.addUserData(ec2Instance);
- 
-    this.setupOutput(ec2Instance, key);
+
+    const dbInstance = this.provisionDbInstance(vpc, ec2Instance);
+
+    this.setupOutput(ec2Instance, dbInstance, key);
   }
 
   /**
@@ -82,9 +84,7 @@ export class Plus1CloudStack extends Stack {
       generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       cpuType: ec2.AmazonLinuxCpuType.X86_64,
     });
-
-    /** Create EC2 instance */
-    const instanceType = ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO);
+    const instanceType = ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO)
     
     return new ec2.Instance(this, 'EC2Instance', {
       instanceName: 'Plus1Linux',
@@ -112,9 +112,39 @@ export class Plus1CloudStack extends Stack {
     ec2Instance.addUserData(userDataScript);
   }
 
-  setupOutput(ec2Instance: ec2.Instance, key: KeyPair) {
-    new CfnOutput(this, 'Public IP', { value: ec2Instance.instancePublicIp});
-    new CfnOutput(this, 'Key Name', { value: key.keyPairName });
+  provisionDbInstance(vpc: ec2.Vpc, ec2Instance: ec2.Instance): rds.DatabaseInstance {
+    const dbInstance  = new rds.DatabaseInstance(this, 'DatabaseInstance', {
+      databaseName: 'plus1_dev_db',
+      vpc, 
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+      },
+      engine: rds.DatabaseInstanceEngine.postgres({
+        version: rds.PostgresEngineVersion.VER_14_3,
+      }),
+      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
+      credentials: rds.Credentials.fromGeneratedSecret('postadmin22'), // password will be auto-generated and stored in secret manager
+      multiAz: false, // use true in production 
+      allocatedStorage: 100, 
+      maxAllocatedStorage: 105,
+      allowMajorVersionUpgrade: false,
+      autoMinorVersionUpgrade: true,
+      backupRetention: Duration.days(0), // set to 1 for production (default is 1)
+      deleteAutomatedBackups: true, // use false for production (default is false)
+      removalPolicy: RemovalPolicy.DESTROY, // use RETAIN or SNAPSHOT in production 
+      deletionProtection: false, // set to true in production 
+      publiclyAccessible: false,
+    });
+
+    dbInstance.connections.allowFrom(ec2Instance, ec2.Port.tcp(5432));
+    return dbInstance;
+  }
+
+  setupOutput(ec2Instance: ec2.Instance, dbInstance:  rds.DatabaseInstance,key: KeyPair) {
+    new CfnOutput(this, 'PublicIP', { value: ec2Instance.instancePublicIp });
+    new CfnOutput(this, 'EC2KeyName', { value: key.keyPairName });
+    new CfnOutput(this, 'DBSecretName', { value: dbInstance.secret?.secretName! })
+    new CfnOutput(this, 'DBEndpoint', { value: dbInstance.dbInstanceEndpointAddress});
   }
   /* 
    * @override: limits the availability zones that could be selected
@@ -140,10 +170,18 @@ $ aws ec2 describe-images
 $ aws cloudformation describe-stacks 
 $ aws ec2 describe-addresses
 $ aws ec2 allocate-address --domain vpc
+$ aws secretsmanager list-secrets
 
 ## To download keypair from secret manager
 $ aws secretsmanager get-secret-value --secret-id ec2-ssh-key/Plus1LinuxKey/private --query SecretString --output text > Plus1LinuxKey.pem 
 $ chmod 400 Plus1LinuxKey.pem'
+
+## To retrive your DB password 
+# Copy the DBSecretName from the deploy output or list all your account secrets or 
+# copy the Name of the relevant secret
+$ aws secretsmanager list-secrets 
+# Get the secret details
+$ aws secretsmanager get-secret-value --secret-id Plus1CloudStackDatabaseInst-xxxxxxx
 
 ## SSH into EC2 instance 
 $ ssh -i cdk-key.pem -o IdentitiesOnly=yes ec2-user@xx.xxxx.xxx
