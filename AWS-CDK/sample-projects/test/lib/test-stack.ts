@@ -119,6 +119,7 @@ export class TestStack extends cdk.Stack {
     //     certificate: domainCert,
     //   }
     // })
+    new CfnOutput(this, 'UserPoolId', { value: userPool.userPoolId});
     new CfnOutput(this, 'UserPoolClientId', {value: client.userPoolClientId });
     new CfnOutput(this, 'UserPoolClientName', {value: client.userPoolClientName });
   }
