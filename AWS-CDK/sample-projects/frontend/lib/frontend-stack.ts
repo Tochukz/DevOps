@@ -30,6 +30,7 @@ export class FrontendStack extends cdk.Stack {
     return new s3.Bucket(this, 'S3Bucket', {
       bucketName: 'ecommerce-frontend-origin',
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
   }
 
