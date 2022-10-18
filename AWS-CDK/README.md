@@ -66,10 +66,56 @@ __IDE Plugin__
 Install the AWS Toolkit for Visual Studio Code extension if you are using VSCode.
 The toolkit provides an integrated experience for developing AWS CDK applications, including the AWS CDK Explorer feature to list your AWS CDK projects and browse the various components of the CDK application. [AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/)
 
+__Local Stack__   
+LocalStack is a cloud service emulator that runs in a single container on your local machine or in your CI environment.  
+To install LocalStack you first need to install `Python 3`, and Docker. `pip` the python package manager will be used to install LocalStack  
+[Getting Started with LocalStack ](https://docs.localstack.cloud/get-started/)   
+[Github LocalStack](https://github.com/localstack/localstack)  
+
+__Local Stack Setup__  
+1. Install Python3 using the python version manager `pyenv`
+```bash
+$ brew install pyenv
+$ pyenv install 3.9.2
+# Setup MacOS PATH for pyenv in ZSH. For bash this will be different
+$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+$ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+$ echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init --path)"\n  eval "$(pyenv init -)"\nfi' >> ~/.zshrc
+# Set your new version of Python as global
+$ pyenv global 3.9.2
+# Close and restart your terminal window for the changes to take effect, then check version
+$ python --version
+```  
+2. Install Docker desktop from [docker for desktop](https://docs.docker.com/desktop/)  
+3. Install LocalStack
+```bash
+# you may need to update pip before installing localstack
+$ pip install --upgrade pip
+$ pip install localstack
+```
+4. Start LocalStack as a deamon
+```
+$ localstack start -d
+```
+5. Check LocalStack status and see all the emulated services
+```
+$ localstack status
+$ localstack status services
+```
+6. Install `awslocal`  
+```
+$ pip install awscli-local
+```
+7. You can then use `awslocal` in place of `aws`
+```
+$ awslocal ec2 describe-instances
+```
+
 __References__   
 [Working with the AWS CDK in TypeScript](https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-typescript.html)   
 [AWS CDK Toolkit (cdk command)](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)  
 [Installing the AWS Toolkit for Visual Studio Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/setup-toolkit.html)
+[Install Python 3 on MacOS using Brew](https://www.freecodecamp.org/news/python-version-on-mac-update/)
 
 ## Chapter 2: AWS CDK Application  
 __AW CDK Development workflow__  
@@ -96,7 +142,7 @@ $ cd hello-cdk
 ```  
 While inside the directory, initialize the app using the `cdk init` command with the `app` template and your chosen programming language.
 ```
-$ cdk  init app --language typescript
+$ cdk init app --language typescript
 ```  
 The template is optional and `app` is the default template.  
 
@@ -123,7 +169,7 @@ Command         | Description
 `cdk diff`      | compare deployed stack with current state
 `cdk doctor` | Checks your CDK project for potential problems
 `cdk metadata` | Displays metadata about the specified stack
-`cdk context` | Manages cached context values 
+`cdk context` | Manages cached context values
 `cdk init sample-app` | Create new CDK app using the _sample-app_ template
 `cdk init --list ` | Shows the list of available template
 
