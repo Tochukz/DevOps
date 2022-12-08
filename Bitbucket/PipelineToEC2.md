@@ -136,7 +136,7 @@ aws ssm send-command \
 Note: Todo:  This does not working at the moment. It throw in validation error.
 
 3. Alternatively, install CodeDeploy manually on your EC2 instance
-SSH into your instance and run the following commands
+SSH into your instance and run the following commands.   
 __Note:__ Using SSM Agent is the recommended way to install CodeDeploy on your instance because it allows you to automate the installation update.  
 __Install Code Deploy on Ubuntu 16:04 - 20:04__  
 Please replace the region substring eu-west-2 to the region of your EC2 instance in the url for the `wget` download
@@ -191,6 +191,36 @@ $ sudo systemctl list-units --type=service | grep codedeploy
 $ sudo service codedeploy-agent status
 ```  
 
+__Install Code Deploy on Amazon Linux 2__  
+First install ruby and wget
+```
+$ sudo yum update
+$ sudo yum install ruby
+$ sudo yum install wget
+```  
+To clean the AMI of any previous agent caching information, run the following script:
+```bash
+#!/bin/bash
+CODEDEPLOY_BIN="/opt/codedeploy-agent/bin/codedeploy-agent"
+$CODEDEPLOY_BIN stop
+yum erase codedeploy-agent -y
+```
+Download script and install the codedeploy using wget
+```bash
+$ cd /home/ec2-user
+# bucket-name and region-identifier must be replaced  by your regions code deploy bucket and your infrastructure region respectively
+# See https://docs.aws.amazon.com/codedeploy/latest/userguide/resource-kit.html#resource-kit-bucket-names
+$ wget https://bucket-name.s3.region-identifier.amazonaws.com/latest/install
+$ chmod +x ./install
+$ sudo ./install auto
+# check that the service is running
+$ sudo service codedeploy-agent status
+# If not running
+$ sudo service codedeploy-agent start
+# To check it's status
+$ sudo service codedeploy-agent status
+```  
+[Install the CodeDeploy agent for Amazon Linux or RHEL](https://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install-linux.html)
 ### 6. Create a CodeDeploy Application for you AWS account
 1. Create deploy application
 ```
