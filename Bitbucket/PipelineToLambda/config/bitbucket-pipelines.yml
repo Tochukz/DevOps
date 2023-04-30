@@ -1,0 +1,53 @@
+image: node:18
+
+definitions:
+  services:
+    docker:
+      memory: 3072
+  caches:
+    sonar: ~/.sonar/cache
+
+  steps:
+    - step: &run-tests
+        name: Run tests
+        script:
+          - yarn install && yarn test:cov
+        artifacts:
+          - coverage/lcov.info
+
+    - step: &build-for-deploy
+        caches:
+          - node
+        script:
+          - apt update
+          - apt install -y jq zip awscli
+          - declare -x VERSION=$(jq -r '.version' package.json)
+          - echo "$VERSION"
+          - ./deploy.sh $VERSION
+        artifacts:
+          - dist.zip
+
+pipelines:
+  branches:
+    '{develop,bugfix/*,feature/*}':
+      - step: *run-tests
+      - step:
+          <<: *build-for-deploy
+          name: Deploy to develop
+          trigger: automatic
+          deployment: Development
+
+    '{release/*,hotfix/*}':
+      - step: *run-tests
+      - step:
+          <<: *build-for-deploy
+          name: Deploy to staging
+          trigger: automatic
+          deployment: Staging
+
+    master:
+      - step:
+          <<: *build-for-deploy
+          name: Deploy to production
+          trigger: manual
+          deployment: Production
