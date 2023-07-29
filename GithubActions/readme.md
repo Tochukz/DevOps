@@ -19,10 +19,27 @@ By default, jobs have no dependencies and run in parallel with each other but yo
 
 __Actions__   
 An action is a custom application for the GitHub Actions platform that performs a complex but frequently repeated task.  
-You can write your own actions, or you can find actions to use in your workflows in the GitHub Marketplace.
+You can write your own actions, or you can find actions to use in your workflows in the [GitHub Marketplace](https://github.com/marketplace/actions).  
 
 __Runners__  
 A runner is a server that runs your workflows when they're triggered.  
 Each runner can run a single job at a time.  
 GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your workflows.   
 You can host your own runners.   
+
+## Resources 
+__Articles and Tutorials__  
+* [Creating actions](https://docs.github.com/en/actions/creating-actions)  
+* [Finding and customizing actions](https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions)  
+* [Automating builds and tests](https://docs.github.com/en/actions/automating-builds-and-tests)  
+* [Publishing packages](https://docs.github.com/en/actions/publishing-packages)  
+* [Deployments](https://docs.github.com/en/actions/deployment)  
+* [Managing issues and pull requests](https://docs.github.com/en/actions/managing-issues-and-pull-requests)  
+* [Examples](https://docs.github.com/en/actions/examples)  
+
+__Useful actions to explore__  
+* [Sonar Cloud](https://github.com/marketplace/actions/sonarcloud-scan)  
+* [Run tfsec PR commenter](https://github.com/marketplace/actions/run-tfsec-pr-commenter) - Add comments to pull requests where tfsec checks have failed
+* [TFSec action](https://github.com/marketplace/actions/tfsec-action)  
+* [TFLint](https://github.com/marketplace/actions/setup-tflint)  
+* [Stelligent cfn_nag](https://github.com/marketplace/actions/stelligent-cfn_nag)  
