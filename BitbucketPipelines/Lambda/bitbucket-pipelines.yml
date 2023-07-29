@@ -29,7 +29,7 @@ definitions:
 
 pipelines:
   branches:
-    '{develop,bugfix/*,feature/*}':
+    '{develop,bugfix/*}':
       - step: *run-tests
       - step:
           <<: *build-for-deploy
