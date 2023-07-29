@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * This is a Lambda function handler that is responsible for running the database migrations.
+ */
+
 require('dotenv').config();
 const { exec } = require('child_process');
 const { join } = require('path');

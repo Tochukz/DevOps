@@ -1,4 +1,4 @@
-# Bitbucket Pipeline
+# Bitbucket Pipelines
 ### Description 
 Bitbucket pipeline configuration for various use cases.  
 
