@@ -1,0 +1,70 @@
+image: sovtech/bitbucket-pipelines-node-aws:18.x
+
+definitions:
+  caches:
+    sonar: ~/.sonar/cache # Caching SonarQube artifacts will speed the build
+  steps:
+    - step: &run-tests
+        name: Run tests
+        script:
+          - yarn install && yarn test:cov
+        artifacts:
+          - coverage/lcov.info
+
+    - step: &sonarqube-analysis
+        name: Analyse with SonarQube
+        image: sonarsource/sonar-scanner-cli:4.8
+        caches:
+          - node
+          - sonar
+        script:
+          - sonar-scanner
+          
+    - step: &build-deploy
+        caches:
+          - node
+        script:
+          - yarn install --no-lockfile
+          - yarn build
+          - aws s3 sync dist $S3_BUCKET --delete
+          - aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --path "/"
+          - sh upload-sourcemaps.sh
+        
+pipelines:
+  branches:
+    '{develop,bugfix/*}':
+      - step: *run-tests
+      - step: *sonarqube-analysis      
+      - step:
+          <<: *build-deploy
+          name: Deploy to develop
+          trigger: automatic
+          deployment: Development
+            
+    '{release/*,hotfix/*}':
+      - step: *run-tests
+      - step: *sonarqube-analysis 
+      - step:
+          <<: *build-deploy
+          name: Deploy to stagting
+          trigger: automatic
+          deployment: Staging   
+    master:
+      - step: *run-tests
+      - step: *sonarqube-analysis 
+      - step:
+          <<: *build-deploy
+          name: Deploy to production
+          trigger: manual
+          deployment: Production
+      - step:
+          name: Sync develop with master
+          script:
+            - sh sync-develop.sh 
+
+  pull-requests:
+    "feature/*":
+      - step: *run-tests        
+      - step: *sonarqube-analysis
+         
+      
