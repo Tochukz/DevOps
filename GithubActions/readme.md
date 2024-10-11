@@ -1,16 +1,16 @@
-# Github Actions 
+# Github Actions
 [Github Actions Docs](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)  
 GitHub Actions is a continuous integration and continuous delivery (CI/CD) platform that allows you to automate your build, test, and deployment pipeline.  
 
 GitHub provides Linux, Windows, and macOS virtual machines to run your workflows, or you can host your own self-hosted runners in your own data center or cloud infrastructure.
 
-## Components of Github actions 
+## Components of Github actions
 __Workflow__  
-A workflow is a configurable automated process that will run one or more jobs. Workflows are defined by a YAML file. 
+A workflow is a configurable automated process that will run one or more jobs. Workflows are defined by a YAML file.
 Workflows can be triggered by an event in your repository, or they can be triggered manually, or at a defined schedule.    
 Workflows are defined in the `.github/workflows` directory in a repository, and a repository can have multiple workflows, each of which can perform a different set of tasks.  
 
-__Events__ 
+__Events__   
 An event is a specific activity in a repository that triggers a workflow run. For example, pull request. See more [events-that-trigger-workflows](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)  
 
 __Job__   
@@ -27,7 +27,7 @@ Each runner can run a single job at a time.
 GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your workflows.   
 You can host your own runners.   
 
-## Resources 
+## Resources
 __Articles and Tutorials__  
 * [Creating actions](https://docs.github.com/en/actions/creating-actions)  
 * [Finding and customizing actions](https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions)  

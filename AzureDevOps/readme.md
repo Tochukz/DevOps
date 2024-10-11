@@ -1,5 +1,6 @@
 # Azure DevOps 
-## Chapter 1: Getting Started with Azure Devops  
+## Azure DevOps Tutorial
+### Chapter 1: Getting Started with Azure Devops  
 __Value Stream Map__   
 The purpose of a VSM is to visually show where in the process a team creates value and where there's waste.  
 The goal is to arrive at a process that delivers maximum value to the customer with minimum waste.  
@@ -18,7 +19,7 @@ __Resources__
 [Azure DevOps practices](https://learn.microsoft.com/en-us/training/paths/evolve-your-devops-practices/)  
 [Getting started with Azure DevOps](https://learn.microsoft.com/en-us/training/modules/get-started-with-devops/)  
 
-## Chapter 2: Introduction to Azure DevOps 
+### Chapter 2: Introduction to Azure DevOps 
 __Introduction to Azure DevOps__  
 Azure DevOps provides tools for automated build processes, testing, version control, and package management. 
 These tools can be uses in the cloud or on-premises, with Windows or Linux OS.  
@@ -43,3 +44,6 @@ To setup a free Azure DevOps organization, go to [dev.azure.com](dev.azure.com).
 __Resources__  
 [Introduction](https://learn.microsoft.com/en-us/training/modules/get-started-with-devops/1-introduction)  
 [Azure DevOps Server](https://azure.microsoft.com/en-us/products/devops/server/)
+
+## Azure Pipelines 
+[Azure Pipelines Doc](https://learn.microsoft.com/en-us/azure/devops/pipelines/)
